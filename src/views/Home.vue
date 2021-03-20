@@ -148,7 +148,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .register__container {
   display: grid;
-  grid-template-columns: auto 600px;
+  grid-template-columns: auto minmax(auto, 700px);
 
   .image_section {
     background: url("../assets/camera.jpg");
