@@ -1,43 +1,84 @@
 <template>
-  <main class="container">
-    <section class="image_section"></section>
-    <div class="submit-form">
-      <div v-if="!submitted">
-        <div class="form-group">
-          <label for="visitor-firstname">Visitor firstname</label>
-          <input
-            type="text"
-            class="form-control"
-            id="visitor-firstname"
-            required
-            v-model="form.visitor.firstname"
-            name="visitor-firstname"
-          />
+  <main class="register__container">
+    <section class="image_section" />
+
+    <section class="form_section">
+      <img src="../assets/logo.svg" alt="Electro team logo" class="logo" />
+      <form @submit.prevent>
+        <template v-if="!submitted">
+          <fieldset>
+            <legend>Besökare</legend>
+            <div class="input__container">
+              <div>
+                <label v-show="false" for="visitor-firstname" class="form-label"
+                  >Förnamn</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="visitor-firstname"
+                  required
+                  v-model="form.visitor.firstname"
+                  name="visitor-firstname"
+                  :placeholder="content.form.labels.firstname"
+                />
+              </div>
+
+              <div>
+                <label v-show="false" for="visitor-firstname" class="form-label"
+                  >Efternamn</label
+                >
+                <input
+                  class="form-control"
+                  id="visitor-lastname"
+                  required
+                  v-model="form.visitor.lastname"
+                  name="visitor-lastname"
+                  :placeholder="content.form.labels.lastname"
+                />
+              </div>
+
+              <div>
+                <label v-show="false" for="visitor-firstname" class="form-label"
+                  >Efternamn</label
+                >
+                <input
+                  class="form-control"
+                  id="visitor-lastname"
+                  required
+                  v-model="form.whoToVisit"
+                  name="visitor-lastname"
+                  :placeholder="content.form.labels.whoToVisit"
+                  list="electro-team-employies"
+                />
+
+                <datalist id="electro-team-employies">
+                  <option
+                    v-for="employeeName in employees"
+                    :value="employeeName"
+                    :key="employeeName"
+                  >
+                  </option>
+                </datalist>
+              </div>
+            </div>
+          </fieldset>
+          <button
+            @click="onClickRegisterVisitor"
+            class="btn btn-success register__button"
+          >
+            Registrera
+          </button>
+        </template>
+
+        <div v-else>
+          <h4>You submitted successfully!</h4>
+          <button class="btn btn-success " @click="onClickRegisterNewVisitor">
+            Add
+          </button>
         </div>
-
-        <div class="form-group">
-          <label for="visitor-lastname">Visitor lastname</label>
-          <input
-            class="form-control"
-            id="visitor-lastname"
-            required
-            v-model="form.visitor.lastname"
-            name="visitor-lastname"
-          />
-        </div>
-
-        <button @click="onClickRegisterVisitor" class="btn btn-success">
-          Registrera
-        </button>
-      </div>
-
-      <div v-else>
-        <h4>You submitted successfully!</h4>
-        <button class="btn btn-success" @click="onClickRegisterNewVisitor">
-          Add
-        </button>
-      </div>
-    </div>
+      </form>
+    </section>
   </main>
 </template>
 
@@ -46,7 +87,19 @@ import { defineComponent } from "vue";
 import WiseNetWaveDataService from "@/services/WiseNetWaveDataService/WiseNetWaveDataService";
 import { RegistrationType } from "@/services/WiseNetWaveDataService/RegistrationType";
 
-type DataType = { form: RegistrationType };
+type DataType = {
+  form: RegistrationType;
+  employees: string[];
+  content: {
+    form: {
+      labels: {
+        firstname: string;
+        lastname: string;
+        whoToVisit: string;
+      };
+    };
+  };
+};
 
 export default defineComponent({
   name: "Home",
@@ -58,9 +111,24 @@ export default defineComponent({
           firstname: "",
           lastname: ""
         },
-        whoToVisit: {
-          firstname: "Niclas",
-          lastname: "Sjöstedt"
+        whoToVisit: ""
+      },
+      employees: [
+        "Niclas Sjöstedt",
+        "Erik Brengesjö",
+        "Jonas Fritz",
+        "Jan Byman",
+        "Henrik Eskilsson",
+        "Niclas Sjöstedt",
+        "Madelene Krantz"
+      ],
+      content: {
+        form: {
+          labels: {
+            firstname: "Förnamn",
+            lastname: "Efternamn",
+            whoToVisit: "Vem ska du besöka"
+          }
         }
       }
     };
@@ -78,14 +146,51 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.container {
-  background-color: red;
-  width: 100%;
+.register__container {
+  display: grid;
+  grid-template-columns: auto 600px;
+
   .image_section {
     background: url("../assets/camera.jpg");
     background-size: cover;
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    height: 100vh;
+  }
+
+  .form_section {
+    padding-top: 32px;
+    display: grid;
+    grid-template-rows: 20% 80%;
+
+    form {
+      padding: 0 20%;
+
+      legend {
+        width: auto;
+        padding: 0 10px; /* To give a bit of padding on the left and right */
+      }
+
+      .visit__section {
+        margin-top: 16px;
+      }
+
+      .register__button {
+        align-self: left;
+        margin-top: 20px;
+      }
+
+      .input__container {
+        display: grid;
+        grid-auto-flow: rows;
+        row-gap: 16px;
+      }
+    }
+
+    .logo {
+      width: 50%;
+      align-self: center;
+      justify-self: center;
+    }
   }
 }
 </style>

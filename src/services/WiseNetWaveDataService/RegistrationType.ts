@@ -4,9 +4,8 @@ type Fullname = {
 };
 
 export type Visitor = Fullname & {};
-export type WhoToVisit = Fullname & {};
 
 export type RegistrationType = {
   visitor: Visitor;
-  whoToVisit: WhoToVisit;
+  whoToVisit: string;
 };
