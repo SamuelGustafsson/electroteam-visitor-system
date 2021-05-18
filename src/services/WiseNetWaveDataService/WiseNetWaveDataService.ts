@@ -9,7 +9,7 @@ class WiseNetWaveDataService {
         visitor.firstname
       }%20${
         visitor.lastname
-      }%22&description=%22${`Ska besöka ${whoToVisit}`}%22&metadata={%22cameraRefs%22:[%${
+      }%22&description=%22${`Ska besöka ${whoToVisit}`}%22&metadata={%22cameraRefs%22:[%22${
         config.camID
       }%22]}`
     );
